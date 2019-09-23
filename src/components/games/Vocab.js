@@ -289,7 +289,7 @@ const Vocab = ({
         </Paper>
       )}
 
-      {loading ? (
+      {/* {loading ? (
         <Skeleton height={10} width="40%" />
       ) : (
         <Chip
@@ -298,7 +298,7 @@ const Vocab = ({
           variant="outlined"
           style={{ flexWrap: "wrap" }}
         />
-      )}
+      )} */}
 
       {loading ? (
         <Container

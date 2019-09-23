@@ -292,7 +292,7 @@ const Scrambled = ({
         </Paper>
       )}
 
-      {loading ? (
+      {/* {loading ? (
         <Skeleton height={10} width="40%" />
       ) : (
         <Chip
@@ -300,7 +300,7 @@ const Scrambled = ({
           className={classes.chip}
           variant="outlined"
         />
-      )}
+      )} */}
 
       {loading ? (
         <Container>

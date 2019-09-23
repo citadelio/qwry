@@ -17,7 +17,7 @@ const GameEnvironment = ({ children }) => {
             {children}
             <PauseDialog />
           </Container>
-          <BottomNav />
+          {/* <BottomNav /> */}
         </div>
       </Slide>
     </React.Fragment>

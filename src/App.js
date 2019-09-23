@@ -1,26 +1,59 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import rw from "random-words";
+import dotenv from "dotenv";
+import { connect } from "react-redux";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+import LoadScreen from "./components/LoadScreen";
+import GamesList from "./components/GamesList";
+import Game from "./components/games";
+import Complete from "./components/Complete";
+import GameOver from "./components/GameOver";
+import AppEnvironment from "./components/AppEnvironment";
 
-export default App;
+const App = ({ setting }) => {
+  useEffect(() => {
+    sessionStorage.setItem("display", setting.currentDisplay);
+  }, [setting.currentDisplay]);
+
+  if (setting.currentDisplay === "load") {
+    return (
+      <AppEnvironment>
+        <LoadScreen />
+      </AppEnvironment>
+    );
+  } else if (setting.currentDisplay === "list") {
+    return (
+      <AppEnvironment>
+        <GamesList />
+      </AppEnvironment>
+    );
+  } else if (
+    setting.currentDisplay === "playing" ||
+    setting.currentDisplay === "restart" ||
+    setting.currentDisplay === "next" ||
+    setting.currentDisplay === "switch"
+  ) {
+    return (
+      <AppEnvironment>
+        <Game />
+      </AppEnvironment>
+    );
+  } else if (setting.currentDisplay === "over") {
+    return (
+      <AppEnvironment>
+        <GameOver />
+      </AppEnvironment>
+    );
+  } else if (setting.currentDisplay === "complete") {
+    return (
+      <AppEnvironment>
+        <Complete />
+      </AppEnvironment>
+    );
+  }
+};
+
+const mapStateToProps = state => ({
+  setting: state.settings
+});
+export default connect(mapStateToProps)(App);

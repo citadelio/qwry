@@ -213,6 +213,7 @@ const Vocab = ({
     }
   };
   const getSynonym = async word => {
+    if(!count){ let count = 1}
     try {
       const res = await axios.get(
         `https://www.dictionaryapi.com/api/v3/references/thesaurus/json/${word}?key=${process.env.REACT_APP_THESAURUS_KEY}`
@@ -224,17 +225,24 @@ const Vocab = ({
         const respp = res.data[0].meta.syns[0][0];
         // return respp;
         const threeWords = randomWords(3);
-
+        count = 0
         threeWords.push(respp);
 
         shuffleWords(threeWords);
       } else {
+        count = 0
         getAndSetWords();
       }
     } catch (error) {
+      count++
+      if(count >= 5)
+      {
       setSynonym("");
       setIsOffline(true);
-      // getAndSetWords();
+      return;
+      }else{
+      getAndSetWords();
+      }
     }
   };
 

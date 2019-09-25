@@ -213,22 +213,31 @@ const Meaning = ({
   };
 
   const getDefinition = async word => {
+    if(!count){ let count = 1}
     try {
       const res = await axios.get(
         `https://www.dictionaryapi.com/api/v3/references/thesaurus/json/${word}?key=${process.env.REACT_APP_THESAURUS_KEY}`
       );
       if (!isNull(res.data[0].shortdef) && res.data[0].shortdef.length > 0) {
+        count = 0
         setDefinition(res.data[0].shortdef);
         setLoading(false);
       } else {
+        count = 0
         const { primaryWord, secondaryWord } = getAndSetWords();
         shuffleWords(primaryWord, secondaryWord);
       }
     } catch (error) {
+      count++
+      if(count >= 5)
+      {
       setDefinition([]);
       setIsOffline(true);
-      // const { primaryWord, secondaryWord } = getAndSetWords();
-      // shuffleWords(primaryWord, secondaryWord);
+      return;
+      }else{
+      const { primaryWord, secondaryWord } = getAndSetWords();
+      shuffleWords(primaryWord, secondaryWord);
+      }
     }
   };
   const getAndSetWords = () => {

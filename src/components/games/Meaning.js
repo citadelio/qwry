@@ -15,7 +15,7 @@ import ErrorIcon from "@material-ui/icons/Error";
 import InfoIcon from "@material-ui/icons/Info";
 import WarningIcon from "@material-ui/icons/Warning";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
-import { BackspaceRounded } from "@material-ui/icons";
+import { BackspaceRounded,PlayCircleOutline } from "@material-ui/icons";
 import randomWords from "random-words";
 import axios from "axios";
 import { connect } from "react-redux";
@@ -32,7 +32,9 @@ import {
   setModeAction
 } from "../../actions/gameplayActions";
 
-import { changeScreenAction } from "../../actions/settingsActions";
+import { changeScreenAction,
+  changeGamePreview,
+  changeSelectedGameAction } from "../../actions/settingsActions";
 import { isNull } from "util";
 // dotenv.config();
 
@@ -113,7 +115,7 @@ const variantIcon = {
 
 const MySnackbarContentWrapper = props => {
   const classes = useStyles();
-  const { className, message, variant, ...other } = props;
+  const { className, action, message, variant, ...other } = props;
   const Icon = variantIcon[variant];
 
   return (
@@ -126,6 +128,7 @@ const MySnackbarContentWrapper = props => {
           {message}
         </span>
       }
+      action={action}
       {...other}
     />
   );
@@ -142,7 +145,9 @@ const Meaning = ({
   setPoint,
   changeScreen,
   resetDuration,
-  setMode
+  setMode,
+  changePreview,
+  changeSelectedGame
 }) => {
   const classes = useStyles(),
     [loading, setLoading] = useState(true),
@@ -273,7 +278,7 @@ const Meaning = ({
             autoHideDuration={1500}
             onClose={() => setSuccessSnackbar(false)}
           >
-            <MySnackbarContentWrapper variant="success" message="Correct!" />
+            <MySnackbarContentWrapper variant="success" message="Correct!"  action={} />
           </Snackbar>
           <Snackbar
             anchorOrigin={{
@@ -284,7 +289,7 @@ const Meaning = ({
             autoHideDuration={1500}
             onClose={() => setIncorrectSnackbar(false)}
           >
-            <MySnackbarContentWrapper variant="error" message="Incorrect!" />
+            <MySnackbarContentWrapper variant="error" message="Incorrect!"  action={} />
           </Snackbar>
           <Snackbar
             anchorOrigin={{
@@ -297,7 +302,21 @@ const Meaning = ({
           >
             <MySnackbarContentWrapper
               variant="error"
-              message="You are currently offline, This game requires an internet connect. Try out the Scrambled Words game which works offline."
+              message="You are currently offline, This game requires an internet connect. Click the icon to play the Scrambled Words game which works offline."
+              action={[
+                <IconButton
+                  key="play"
+                  aria-label="play"
+                  color="inherit"
+                  className={classes.close}
+                  onClick={()=>{ 
+                    changePreview(false);
+                    changeSelectedGame("1");
+                  }}
+                >
+                  <PlayCircleOutline />
+                </IconButton>
+              ]}
             />
           </Snackbar>
         </React.Fragment>
@@ -432,6 +451,12 @@ const mapDispatchToProps = dispatch => ({
   },
   setMode: mode => {
     dispatch(setModeAction(mode));
+  },
+  changePreview: previewState => {
+    dispatch(changeGamePreview(previewState));
+  },
+  changeSelectedGame: id => {
+    dispatch(changeSelectedGameAction(id));
   }
 });
 export default connect(

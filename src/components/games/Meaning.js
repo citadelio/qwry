@@ -288,7 +288,7 @@ const Meaning = ({
             autoHideDuration={1500}
             onClose={() => setSuccessSnackbar(false)}
           >
-            <MySnackbarContentWrapper variant="success" message="Correct!"  action={} />
+            <MySnackbarContentWrapper variant="success" message="Correct!" />
           </Snackbar>
           <Snackbar
             anchorOrigin={{

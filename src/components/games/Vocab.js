@@ -296,7 +296,7 @@ const Vocab = ({
             autoHideDuration={1500}
             onClose={() => setIncorrectSnackbar(false)}
           >
-            <MySnackbarContentWrapper variant="error" message="Incorrect!"  action={}/>
+            <MySnackbarContentWrapper variant="error" message="Incorrect!"/>
           </Snackbar>
           <Snackbar
             anchorOrigin={{

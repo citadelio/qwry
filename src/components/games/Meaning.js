@@ -293,8 +293,8 @@ const Meaning = ({
           </Snackbar>
           <Snackbar
             anchorOrigin={{
-              vertical: "top",
-              horizontal: "right"
+              vertical: "bottom",
+              horizontal: "left"
             }}
             open={isOffline}
             autoHideDuration={1500}

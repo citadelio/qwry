@@ -214,6 +214,7 @@ const Meaning = ({
 
   const getDefinition = async word => {
     if(!count){ let count = 1}
+    console.log("Amount of try is "+count)
     try {
       const res = await axios.get(
         `https://www.dictionaryapi.com/api/v3/references/thesaurus/json/${word}?key=${process.env.REACT_APP_THESAURUS_KEY}`
@@ -229,7 +230,7 @@ const Meaning = ({
       }
     } catch (error) {
       count++
-      if(count >= 5)
+      if(count >= 50)
       {
       setDefinition([]);
       setIsOffline(true);
@@ -307,11 +308,11 @@ const Meaning = ({
             }}
             open={isOffline}
             autoHideDuration={1500}
-            onClose={() => console.log("You are currently offline")}
+            onClose={() => setIsOffline(false)}
           >
             <MySnackbarContentWrapper
               variant="error"
-              message="You are currently offline, This game requires an internet connect. Click the icon to play the Scrambled Words game which works offline."
+              message="Network issues!, An active internet connection is required. Click the icon to play the Scrambled Words game which works offline."
               action={[
                 <IconButton
                   key="play"

@@ -146,11 +146,12 @@ const Vocab = ({
   setDefinition,
   setMode
 }) => {
-  const classes = useStyles();
-  const [loading, setLoading] = useState(true);
-  const [successSnackbar, setSuccessSnackbar] = useState(false);
-  const [incorrectSnackbar, setIncorrectSnackbar] = useState(false);
-  const [currentSynonym, setCurrentSynonym] = useState("");
+  const classes = useStyles(),
+    [loading, setLoading] = useState(true),
+    [successSnackbar, setSuccessSnackbar] = useState(false),
+    [incorrectSnackbar, setIncorrectSnackbar] = useState(false),
+    [currentSynonym, setCurrentSynonym] = useState(""),
+    [isOffline, setIsOffline] = useState(false);
 
   //get another word to shuffle
   const shuffleArray = array => {
@@ -227,7 +228,8 @@ const Vocab = ({
       }
     } catch (error) {
       setSynonym("");
-      getAndSetWords();
+      setIsOffline(true);
+      // getAndSetWords();
     }
   };
 
@@ -280,6 +282,20 @@ const Vocab = ({
             onClose={() => setIncorrectSnackbar(false)}
           >
             <MySnackbarContentWrapper variant="error" message="Incorrect!" />
+          </Snackbar>
+          <Snackbar
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "right"
+            }}
+            open={isOffline}
+            autoHideDuration={1500}
+            onClose={() => console.log("You are currently offline")}
+          >
+            <MySnackbarContentWrapper
+              variant="error"
+              message="You are currently offline, This game requires an internet connect. Try out the Scrambled Words game which works offline."
+            />
           </Snackbar>
         </React.Fragment>
       }

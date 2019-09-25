@@ -144,10 +144,11 @@ const Meaning = ({
   resetDuration,
   setMode
 }) => {
-  const classes = useStyles();
-  const [loading, setLoading] = useState(true);
-  const [successSnackbar, setSuccessSnackbar] = useState(false);
-  const [incorrectSnackbar, setIncorrectSnackbar] = useState(false);
+  const classes = useStyles(),
+    [loading, setLoading] = useState(true),
+    [successSnackbar, setSuccessSnackbar] = useState(false),
+    [incorrectSnackbar, setIncorrectSnackbar] = useState(false),
+    [isOffline, setIsOffline] = useState(false);
 
   //get another word to shuffle
   const shuffleArray = array => {
@@ -174,7 +175,10 @@ const Meaning = ({
   };
 
   const hasTargetBeenHit = () => {
-    if (gameplay.point >= (gameplay.target) + (((gameplay.level) + (gameplay.level -1)) * 10 ) - 10) {
+    if (
+      gameplay.point >=
+      gameplay.target + (gameplay.level + (gameplay.level - 1)) * 10 - 10
+    ) {
       changeScreen("complete");
     }
   };
@@ -217,8 +221,9 @@ const Meaning = ({
       }
     } catch (error) {
       setDefinition([]);
-      const { primaryWord, secondaryWord } = getAndSetWords();
-      shuffleWords(primaryWord, secondaryWord);
+      setIsOffline(true);
+      // const { primaryWord, secondaryWord } = getAndSetWords();
+      // shuffleWords(primaryWord, secondaryWord);
     }
   };
   const getAndSetWords = () => {
@@ -280,6 +285,20 @@ const Meaning = ({
             onClose={() => setIncorrectSnackbar(false)}
           >
             <MySnackbarContentWrapper variant="error" message="Incorrect!" />
+          </Snackbar>
+          <Snackbar
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "right"
+            }}
+            open={isOffline}
+            autoHideDuration={1500}
+            onClose={() => console.log("You are currently offline")}
+          >
+            <MySnackbarContentWrapper
+              variant="error"
+              message="You are currently offline, This game requires an internet connect. Try out the Scrambled Words game which works offline."
+            />
           </Snackbar>
         </React.Fragment>
       }

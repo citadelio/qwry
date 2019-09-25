@@ -15,7 +15,7 @@ import ErrorIcon from "@material-ui/icons/Error";
 import InfoIcon from "@material-ui/icons/Info";
 import WarningIcon from "@material-ui/icons/Warning";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
-import { BackspaceRounded,PlayCircleOutline } from "@material-ui/icons";
+import { BackspaceRounded, PlayCircleOutline } from "@material-ui/icons";
 import randomWords from "random-words";
 import axios from "axios";
 import { connect } from "react-redux";
@@ -32,9 +32,11 @@ import {
   setModeAction
 } from "../../actions/gameplayActions";
 
-import { changeScreenAction,
+import {
+  changeScreenAction,
   changeGamePreview,
-  changeSelectedGameAction } from "../../actions/settingsActions";
+  changeSelectedGameAction
+} from "../../actions/settingsActions";
 import { isNull } from "util";
 // dotenv.config();
 
@@ -213,31 +215,32 @@ const Meaning = ({
   };
 
   const getDefinition = async word => {
-    if(!count){ let count = 1}
-    console.log("Amount of try is "+count)
+    if (!count) {
+      let count = 1;
+    }
+    console.log("Amount of try is " + count);
     try {
       const res = await axios.get(
         `https://www.dictionaryapi.com/api/v3/references/thesaurus/json/${word}?key=${process.env.REACT_APP_THESAURUS_KEY}`
       );
       if (!isNull(res.data[0].shortdef) && res.data[0].shortdef.length > 0) {
-        count = 0
+        count = 0;
         setDefinition(res.data[0].shortdef);
         setLoading(false);
       } else {
-        count = 0
+        count = 0;
         const { primaryWord, secondaryWord } = getAndSetWords();
         shuffleWords(primaryWord, secondaryWord);
       }
     } catch (error) {
-      count++
-      if(count >= 50)
-      {
-      setDefinition([]);
-      setIsOffline(true);
-      return;
-      }else{
-      const { primaryWord, secondaryWord } = getAndSetWords();
-      shuffleWords(primaryWord, secondaryWord);
+      count++;
+      if (count >= 50) {
+        setDefinition([]);
+        setIsOffline(true);
+        return;
+      } else {
+        const { primaryWord, secondaryWord } = getAndSetWords();
+        shuffleWords(primaryWord, secondaryWord);
       }
     }
   };
@@ -299,7 +302,7 @@ const Meaning = ({
             autoHideDuration={1500}
             onClose={() => setIncorrectSnackbar(false)}
           >
-            <MySnackbarContentWrapper variant="error" message="Incorrect!"  action={} />
+            <MySnackbarContentWrapper variant="error" message="Incorrect!" />
           </Snackbar>
           <Snackbar
             anchorOrigin={{
@@ -319,7 +322,7 @@ const Meaning = ({
                   aria-label="play"
                   color="inherit"
                   className={classes.close}
-                  onClick={()=>{ 
+                  onClick={() => {
                     changePreview(false);
                     changeSelectedGame("1");
                   }}

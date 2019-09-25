@@ -33,9 +33,11 @@ import {
   setModeAction
 } from "../../actions/gameplayActions";
 
-import { changeScreenAction,
+import {
+  changeScreenAction,
   changeGamePreview,
-  changeSelectedGameAction} from "../../actions/settingsActions";
+  changeSelectedGameAction
+} from "../../actions/settingsActions";
 import { isNull } from "util";
 // dotenv.config();
 
@@ -213,8 +215,10 @@ const Vocab = ({
     }
   };
   const getSynonym = async word => {
-    if(!count){ let count = 1}
-    console.log("Amount of try is "+count)
+    if (!count) {
+      let count = 1;
+    }
+    console.log("Amount of try is " + count);
     try {
       const res = await axios.get(
         `https://www.dictionaryapi.com/api/v3/references/thesaurus/json/${word}?key=${process.env.REACT_APP_THESAURUS_KEY}`
@@ -226,24 +230,23 @@ const Vocab = ({
         const respp = res.data[0].meta.syns[0][0];
         // return respp;
         const threeWords = randomWords(3);
-        count = 0
+        count = 0;
         threeWords.push(respp);
 
         shuffleWords(threeWords);
       } else {
-        count = 0
+        count = 0;
         getAndSetWords();
       }
     } catch (error) {
-      count++
-      
-      if(count >= 50)
-      {
-      setSynonym("");
-      setIsOffline(true);
-      return;
-      }else{
-      getAndSetWords();
+      count++;
+
+      if (count >= 50) {
+        setSynonym("");
+        setIsOffline(true);
+        return;
+      } else {
+        getAndSetWords();
       }
     }
   };
@@ -285,7 +288,7 @@ const Vocab = ({
             autoHideDuration={1500}
             onClose={() => setSuccessSnackbar(false)}
           >
-            <MySnackbarContentWrapper variant="success" message="Correct!" action={} />
+            <MySnackbarContentWrapper variant="success" message="Correct!" />
           </Snackbar>
           <Snackbar
             anchorOrigin={{
@@ -296,7 +299,7 @@ const Vocab = ({
             autoHideDuration={1500}
             onClose={() => setIncorrectSnackbar(false)}
           >
-            <MySnackbarContentWrapper variant="error" message="Incorrect!"/>
+            <MySnackbarContentWrapper variant="error" message="Incorrect!" />
           </Snackbar>
           <Snackbar
             anchorOrigin={{
@@ -305,7 +308,7 @@ const Vocab = ({
             }}
             open={isOffline}
             autoHideDuration={1500}
-            onClose={() =>setIsOffline(false)}
+            onClose={() => setIsOffline(false)}
           >
             <MySnackbarContentWrapper
               variant="error"
@@ -316,7 +319,7 @@ const Vocab = ({
                   aria-label="play"
                   color="inherit"
                   className={classes.close}
-                  onClick={()=>{ 
+                  onClick={() => {
                     changePreview(false);
                     changeSelectedGame("1");
                   }}

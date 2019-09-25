@@ -16,3 +16,4 @@ export const SET_LEVEL = "SET_LEVEL";
 export const SET_TARGET = "SET_TARGET";
 export const RESET_DURATION = "RESET_DURATION";
 export const SET_SYNONYM = "SET_SYNONYM";
+export const API_TRIAL = "API_TRIAL";

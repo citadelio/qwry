@@ -11,7 +11,8 @@ import {
   SET_LEVEL,
   SET_TARGET,
   RESET_DURATION,
-  SET_SYNONYM
+  SET_SYNONYM,
+  API_TRIAL
 } from "../actions/actionTypes";
 
 const initialState = {
@@ -27,7 +28,8 @@ const initialState = {
   point: 0,
   target: 20,
   level: 1,
-  synonym: ""
+  synonym: "",
+  apiTrial: 0
 };
 
 export default (state = initialState, action) => {
@@ -119,6 +121,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         synonym: action.payload
+      };
+    case API_TRIAL:
+      return {
+        ...state,
+        apiTrial: action.payload
       };
 
     default:

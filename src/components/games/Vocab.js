@@ -2,9 +2,8 @@ import "dotenv/config";
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
-  Paper,
   Typography,
-  Chip,
+  IconButton,
   Fab,
   Container,
   Snackbar,
@@ -30,7 +29,8 @@ import {
   setPointAction,
   resetDurationAction,
   setDefinitionAction,
-  setModeAction
+  setModeAction,
+  setApiTrialAction
 } from "../../actions/gameplayActions";
 
 import {
@@ -151,15 +151,15 @@ const Vocab = ({
   setDefinition,
   setMode,
   changePreview,
-  changeSelectedGame
+  changeSelectedGame,
+  setApiTrial
 }) => {
   const classes = useStyles(),
     [loading, setLoading] = useState(true),
     [successSnackbar, setSuccessSnackbar] = useState(false),
     [incorrectSnackbar, setIncorrectSnackbar] = useState(false),
     [currentSynonym, setCurrentSynonym] = useState(""),
-    [isOffline, setIsOffline] = useState(false),
-    [apiCount, setApiCount] = useState(0);
+    [isOffline, setIsOffline] = useState(false);
 
   //get another word to shuffle
   const shuffleArray = array => {
@@ -216,7 +216,7 @@ const Vocab = ({
     }
   };
   const getSynonym = async word => {
-    console.log("Amount of try is " + apiCount);
+    console.log("Amount of try is " + gameplay.apiTrial);
     try {
       const res = await axios.get(
         `https://www.dictionaryapi.com/api/v3/references/thesaurus/json/${word}?key=${process.env.REACT_APP_THESAURUS_KEY}`
@@ -228,18 +228,16 @@ const Vocab = ({
         const respp = res.data[0].meta.syns[0][0];
         // return respp;
         const threeWords = randomWords(3);
-        setApiCount(0);
+        setApiTrial(0);
         threeWords.push(respp);
 
         shuffleWords(threeWords);
       } else {
-        setApiCount(0);
+        setApiTrial(0);
         getAndSetWords();
       }
     } catch (error) {
-      setApiCount(apiCount + 1);
-
-      if (apiCount >= 50) {
+      if (gameplay.apiTrial >= 10) {
         setSynonym("");
         setIsOffline(true);
         return;
@@ -254,6 +252,7 @@ const Vocab = ({
     const primaryWord = randomWords();
     //save primary and secondary word
     savePrimaryWord(primaryWord);
+    setApiTrial(gameplay.apiTrial + 1);
     //get Definition
     getSynonym(primaryWord);
   };
@@ -446,6 +445,9 @@ const mapDispatchToProps = dispatch => ({
   },
   changeSelectedGame: id => {
     dispatch(changeSelectedGameAction(id));
+  },
+  setApiTrial: count => {
+    dispatch(setApiTrialAction(count));
   }
 });
 export default connect(

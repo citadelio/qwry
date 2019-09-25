@@ -7,7 +7,8 @@ import {
   Fab,
   Container,
   Snackbar,
-  SnackbarContent
+  SnackbarContent,
+  IconButton
 } from "@material-ui/core";
 import { amber, green } from "@material-ui/core/colors";
 import clsx from "clsx";
@@ -29,7 +30,8 @@ import {
   setDefinitionAction,
   setPointAction,
   resetDurationAction,
-  setModeAction
+  setModeAction,
+  setApiTrialAction
 } from "../../actions/gameplayActions";
 
 import {
@@ -149,15 +151,14 @@ const Meaning = ({
   resetDuration,
   setMode,
   changePreview,
-  changeSelectedGame
+  changeSelectedGame,
+  setApiTrial
 }) => {
   const classes = useStyles(),
     [loading, setLoading] = useState(true),
     [successSnackbar, setSuccessSnackbar] = useState(false),
     [incorrectSnackbar, setIncorrectSnackbar] = useState(false),
-    [isOffline, setIsOffline] = useState(false),
-    [apiCount, setApiCount] = useState(0);
-
+    [isOffline, setIsOffline] = useState(false);
   //get another word to shuffle
   const shuffleArray = array => {
     return array
@@ -216,23 +217,21 @@ const Meaning = ({
   };
 
   const getDefinition = async word => {
-    console.log("Amount of try is " + apiCount);
     try {
       const res = await axios.get(
         `https://www.dictionaryapi.com/api/v3/references/thesaurus/json/${word}?key=${process.env.REACT_APP_THESAURUS_KEY}`
       );
       if (!isNull(res.data[0].shortdef) && res.data[0].shortdef.length > 0) {
-        setApiCount(0);
+        setApiTrial(0);
         setDefinition(res.data[0].shortdef);
         setLoading(false);
       } else {
-        setApiCount(0);
+        setApiTrial(0);
         const { primaryWord, secondaryWord } = getAndSetWords();
         shuffleWords(primaryWord, secondaryWord);
       }
     } catch (error) {
-      setApiCount(apiCount + 1);
-      if (apiCount >= 50) {
+      if (gameplay.apiTrial >= 10) {
         setDefinition([]);
         setIsOffline(true);
         return;
@@ -250,6 +249,8 @@ const Meaning = ({
       maxLength: 3
     }).toString();
     //save primary and secondary word
+
+    setApiTrial(gameplay.apiTrial + 1);
     savePrimaryWord(primaryWord);
     saveSecondaryWord(secondaryWord);
     //get Definition
@@ -468,6 +469,9 @@ const mapDispatchToProps = dispatch => ({
   },
   changeSelectedGame: id => {
     dispatch(changeSelectedGameAction(id));
+  },
+  setApiTrial: count => {
+    dispatch(setApiTrialAction(count));
   }
 });
 export default connect(

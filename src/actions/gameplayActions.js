@@ -11,7 +11,8 @@ import {
   SET_LEVEL,
   SET_TARGET,
   RESET_DURATION,
-  SET_SYNONYM
+  SET_SYNONYM,
+  API_TRIAL
 } from "../actions/actionTypes";
 
 export const decreaseProgressAction = currentProgress => {
@@ -97,10 +98,16 @@ export const resetDurationAction = () => {
   };
 };
 
-
-export const setSynonymAction = (word) => {
+export const setSynonymAction = word => {
   return {
     type: SET_SYNONYM,
     payload: word
+  };
+};
+
+export const setApiTrialAction = count => {
+  return {
+    type: API_TRIAL,
+    payload: count
   };
 };

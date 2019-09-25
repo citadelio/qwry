@@ -158,7 +158,8 @@ const Vocab = ({
     [successSnackbar, setSuccessSnackbar] = useState(false),
     [incorrectSnackbar, setIncorrectSnackbar] = useState(false),
     [currentSynonym, setCurrentSynonym] = useState(""),
-    [isOffline, setIsOffline] = useState(false);
+    [isOffline, setIsOffline] = useState(false),
+    [apiCount, setApiCount] = useState(0);
 
   //get another word to shuffle
   const shuffleArray = array => {
@@ -215,10 +216,7 @@ const Vocab = ({
     }
   };
   const getSynonym = async word => {
-    if (!count) {
-      let count = 1;
-    }
-    console.log("Amount of try is " + count);
+    console.log("Amount of try is " + apiCount);
     try {
       const res = await axios.get(
         `https://www.dictionaryapi.com/api/v3/references/thesaurus/json/${word}?key=${process.env.REACT_APP_THESAURUS_KEY}`
@@ -230,18 +228,18 @@ const Vocab = ({
         const respp = res.data[0].meta.syns[0][0];
         // return respp;
         const threeWords = randomWords(3);
-        count = 0;
+        setApiCount(0);
         threeWords.push(respp);
 
         shuffleWords(threeWords);
       } else {
-        count = 0;
+        setApiCount(0);
         getAndSetWords();
       }
     } catch (error) {
-      count++;
+      setApiCount(apiCount + 1);
 
-      if (count >= 50) {
+      if (apiCount >= 50) {
         setSynonym("");
         setIsOffline(true);
         return;

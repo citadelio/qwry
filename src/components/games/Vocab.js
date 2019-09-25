@@ -16,7 +16,7 @@ import ErrorIcon from "@material-ui/icons/Error";
 import InfoIcon from "@material-ui/icons/Info";
 import WarningIcon from "@material-ui/icons/Warning";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
-import { BackspaceRounded } from "@material-ui/icons";
+import { PlayCircleOutline } from "@material-ui/icons";
 import randomWords from "random-words";
 import axios from "axios";
 import { connect } from "react-redux";

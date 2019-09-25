@@ -16,8 +16,8 @@ import {
 
 const initialState = {
   duration: 10,
-  defaultCompleted: 30,
-  completed: 30,
+  defaultCompleted: 40,
+  completed: 40,
   primaryWord: "",
   secondaryWord: "",
   answer: "",
@@ -27,7 +27,7 @@ const initialState = {
   point: 0,
   target: 20,
   level: 1,
-  synonym:""
+  synonym: ""
 };
 
 export default (state = initialState, action) => {
@@ -68,16 +68,27 @@ export default (state = initialState, action) => {
         definition: action.payload
       };
     case SET_MODE:
-      if (action.payload !== "play") {
-        return {
-          ...state,
-          mode: action.payload,
-          duration: initialState.duration,
-          completed: initialState.completed,
-          point: initialState.point,
-          // level: initialState.level,
-          target: initialState.target
-        };
+      if (action.payload !== "play" && action.payload !== "unPause") {
+        if (action.payload === "another" || action.payload === "home") {
+          return {
+            ...state,
+            mode: action.payload,
+            duration: initialState.duration,
+            completed: initialState.completed,
+            point: initialState.point,
+            level: initialState.level,
+            target: initialState.target
+          };
+        } else {
+          return {
+            ...state,
+            mode: action.payload,
+            duration: initialState.duration,
+            completed: initialState.completed,
+            point: initialState.point,
+            target: initialState.target
+          };
+        }
       } else {
         return {
           ...state,
@@ -104,12 +115,12 @@ export default (state = initialState, action) => {
         ...state,
         duration: initialState.duration
       };
-      case SET_SYNONYM:
-          return {
-            ...state,
-            synonym: action.payload
-          };
-    
+    case SET_SYNONYM:
+      return {
+        ...state,
+        synonym: action.payload
+      };
+
     default:
       return state;
   }

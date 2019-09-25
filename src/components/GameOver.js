@@ -48,7 +48,8 @@ const useStyles = makeStyles(theme => ({
     color: "ghostwhite",
     marginTop: 0,
     lineHeight: 1,
-    fontSize: "3rem"
+    fontSize: "3rem",
+    fontFamily: "PT Serif"
   },
   button: {
     color: "ghostwhite"
@@ -57,7 +58,8 @@ const useStyles = makeStyles(theme => ({
     fontSize: "1rem",
     float: "right",
     color: "#cbcbce",
-    fontStyle: "italic"
+    fontStyle: "italic",
+    fontFamily: "PT Serif"
   },
   close: {
     padding: theme.spacing(0.5)

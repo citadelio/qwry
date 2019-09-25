@@ -1,4 +1,3 @@
-import "dotenv/config";
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -29,7 +28,8 @@ import {
   saveShuffledWordAction,
   setDefinitionAction,
   setPointAction,
-  resetDurationAction
+  resetDurationAction,
+  setModeAction
 } from "../../actions/gameplayActions";
 
 import { changeScreenAction } from "../../actions/settingsActions";
@@ -141,7 +141,8 @@ const Meaning = ({
   setDefinition,
   setPoint,
   changeScreen,
-  resetDuration
+  resetDuration,
+  setMode
 }) => {
   const classes = useStyles();
   const [loading, setLoading] = useState(true);
@@ -173,7 +174,7 @@ const Meaning = ({
   };
 
   const hasTargetBeenHit = () => {
-    if (gameplay.point >= gameplay.target * gameplay.level - 10) {
+    if (gameplay.point >= (gameplay.target) + (((gameplay.level) + (gameplay.level -1)) * 10 ) - 10) {
       changeScreen("complete");
     }
   };
@@ -205,7 +206,7 @@ const Meaning = ({
   const getDefinition = async word => {
     try {
       const res = await axios.get(
-        `https://www.dictionaryapi.com/api/v3/references/thesaurus/json/${word}?key=70b7b800-b7de-44b9-b922-01f77a572d85`
+        `https://www.dictionaryapi.com/api/v3/references/thesaurus/json/${word}?key=${process.env.REACT_APP_THESAURUS_KEY}`
       );
       if (!isNull(res.data[0].shortdef) && res.data[0].shortdef.length > 0) {
         setDefinition(res.data[0].shortdef);
@@ -245,6 +246,7 @@ const Meaning = ({
   useEffect(() => {
     if (gameplay.mode === "play") {
       setLoading(false);
+      setMode("unPause");
       return;
     } else {
       //get and Set Words
@@ -408,6 +410,9 @@ const mapDispatchToProps = dispatch => ({
   },
   resetDuration: () => {
     dispatch(resetDurationAction());
+  },
+  setMode: mode => {
+    dispatch(setModeAction(mode));
   }
 });
 export default connect(

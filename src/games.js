@@ -9,7 +9,7 @@ export default {
     {
       id: 1,
       title: "Speed Typing",
-      image_path: Typing,
+      image_path: Drag,
       description:
         "Test how fast you can type, You'll be presented with a word and be required to type out the word from the buttons provided. The twist however is the the buttons are scrambled and will be reshuffled each time you type. try to beat the time and advance to the next stage"
     },
@@ -23,7 +23,7 @@ export default {
     {
       id: 3,
       title: "What's the Meaning",
-      image_path: Mouth,
+      image_path: Typing,
       description:
         "When this game begins, The meaning of a word will be presented to you, Your task is to try to get correctly the word that has that meaning, Once you know the word, Just qucikly type it out."
     },

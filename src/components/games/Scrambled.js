@@ -29,7 +29,8 @@ import {
   saveShuffledWordAction,
   setDefinitionAction,
   setPointAction,
-  resetDurationAction
+  resetDurationAction,
+  setModeAction
 } from "../../actions/gameplayActions";
 
 import { changeScreenAction } from "../../actions/settingsActions";
@@ -141,7 +142,8 @@ const Scrambled = ({
   setDefinition,
   setPoint,
   changeScreen,
-  resetDuration
+  resetDuration,
+  setMode
 }) => {
   const classes = useStyles();
   const [loading, setLoading] = useState(true);
@@ -173,7 +175,7 @@ const Scrambled = ({
   };
 
   const hasTargetBeenHit = () => {
-    if (gameplay.point >= gameplay.target * gameplay.level - 10) {
+    if (gameplay.point >= (gameplay.target) + (((gameplay.level) + (gameplay.level -1)) * 10 ) - 10) {
       changeScreen("complete");
     }
   };
@@ -205,7 +207,7 @@ const Scrambled = ({
   const getDefinition = async word => {
     try {
       const res = await axios.get(
-        `https://www.dictionaryapi.com/api/v3/references/thesaurus/json/${word}?key=70b7b800-b7de-44b9-b922-01f77a572d85`
+        `https://www.dictionaryapi.com/api/v3/references/thesaurus/json/${word}?key=${process.env.REACT_APP_THESAURUS_KEY}`
       );
       if (!isNull(res.data[0].shortdef) && res.data[0].shortdef.length > 0) {
         setDefinition(res.data[0].shortdef);
@@ -245,6 +247,8 @@ const Scrambled = ({
   useEffect(() => {
     if (gameplay.mode === "play") {
       setLoading(false);
+      setMode("unPause");
+      console.log("opopops");
       return;
     } else {
       //get and Set Words
@@ -285,11 +289,11 @@ const Scrambled = ({
       {loading ? (
         <Skeleton variant="rect" width="100%" height={118} />
       ) : (
-        <Paper className={classes.root} style={{ padding: 15 }}>
-          <Typography component="div">
-            <h1>{gameplay.primaryWord}</h1>
-          </Typography>
-        </Paper>
+        // <Paper className={classes.root} style={{ padding: 15 }}>
+        <Typography component="div">
+          <h1>{gameplay.primaryWord.toUpperCase()}</h1>
+        </Typography>
+        // </Paper>
       )}
 
       {/* {loading ? (
@@ -405,6 +409,9 @@ const mapDispatchToProps = dispatch => ({
   },
   resetDuration: () => {
     dispatch(resetDurationAction());
+  },
+  setMode: mode => {
+    dispatch(setModeAction(mode));
   }
 });
 export default connect(

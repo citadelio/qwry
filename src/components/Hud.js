@@ -226,13 +226,17 @@ const Hud = ({
           <small style={styles.subtitle}>Point</small>
           {gameplay.point}
         </Grid>
-        <Grid item xs={4} style={styles.item}>
+        <Grid
+          item
+          xs={4}
+          style={gameplay.duration <= 5 ? styles.itemRed : styles.item}
+        >
           <small style={styles.subtitle}>Time</small>:
           {gameplay.duration.toString().padStart(2, 0)}
         </Grid>
         <Grid item xs={4} style={styles.item}>
           <small style={styles.subtitle}>Target</small>
-          {gameplay.target * gameplay.level}
+          {(gameplay.target) + (((gameplay.level) + (gameplay.level -1)) * 10 )}
         </Grid>
       </Grid>
 
@@ -262,6 +266,11 @@ const styles = {
   item: {
     padding: 4,
     border: "3px solid #3f51b5"
+  },
+  itemRed: {
+    padding: 4,
+    border: "3px solid #3f51b5",
+    color: "red"
   },
   pauseBtn: {
     top: 0,

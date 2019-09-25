@@ -7,6 +7,7 @@ import { Provider } from "react-redux";
 import rootReducer from "./reducers";
 import thunk from "redux-thunk";
 import { createStore, compose, applyMiddleware } from "redux";
+require("dotenv").config();
 
 const middleware = [thunk];
 
@@ -16,8 +17,8 @@ const store = createStore(
   compose(
     applyMiddleware(...middleware),
     window.__REDUX_DEVTOOLS_EXTENSION__
-        ? window.__REDUX_DEVTOOLS_EXTENSION__()
-        : f => f
+      ? window.__REDUX_DEVTOOLS_EXTENSION__()
+      : f => f
   )
 );
 ReactDOM.render(
@@ -30,4 +31,4 @@ ReactDOM.render(
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+serviceWorker.register();
